@@ -1,0 +1,10 @@
+com\shouyu\dframework\dframework\demo\interfaces\AccountInterface.class
+com\shouyu\dframework\dframework\demo\domain\repository\AccountRepository.class
+com\shouyu\dframework\dframework\demo\domain\service\AccountService.class
+com\shouyu\dframework\dframework\demo\domain\entity\UcAccount.class
+com\shouyu\dframework\dframework\demo\infrastructure\repository\account\MysqlAccountRepository.class
+com\shouyu\dframework\dframework\demo\DframeworkDemoApplication.class
+com\shouyu\dframework\dframework\demo\infrastructure\repository\account\AccountExample.class
+com\shouyu\dframework\dframework\demo\infrastructure\controller\AccuntController.class
+com\shouyu\dframework\dframework\demo\infrastructure\repository\account\AccountMapper.class
+com\shouyu\dframework\dframework\demo\infrastructure\repository\account\AccountExample$UcAccountCriteria.class

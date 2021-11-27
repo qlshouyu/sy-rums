@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>${basepackage}</groupId>
+        <artifactId>${package_pre}-${subpackage}</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>${package_pre}-${subpackage}-feign</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-httpclient</artifactId>
+            <version>10.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>${basepackage}</groupId>
+            <artifactId>${package_pre}-${subpackage}-model</artifactId>
+            <version>${r"${project.version}"}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.qlshouyu.jframework</groupId>
+            <artifactId>shouyu-jframework-web</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

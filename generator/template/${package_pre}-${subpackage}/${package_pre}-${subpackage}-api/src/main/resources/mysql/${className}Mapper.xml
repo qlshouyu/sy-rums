@@ -1,0 +1,177 @@
+<#assign className = table.className>
+<#assign classNameLower = className?uncap_first>
+<#assign shortName = table.shortName>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${basepackage}.${package_pre}${subpackage}.infrastructure.repository.${classNameLower}.${className}Mapper">
+  <resultMap id="BaseResultMap" type="${basepackage}.${package_pre}${subpackage}.domain.entity.${className}">
+    <#list table.columns as column>
+    <id column="${column.sqlName}" jdbcType="${column.jdbcSqlTypeName}" property="${column.columnNameLower}" />
+    </#list>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${r"${criterion.condition}"}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${r"${criterion.condition}"} ${r"#{criterion.value}"}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${r"${criterion.condition} #{criterion.value} and #{criterion.secondValue}"}
+                </when>
+                <when test="criterion.listValue">
+                  and ${r"${criterion.condition}"}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    ${r"#{listItem}"}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+   </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${r"${criterion.condition}"}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${r"${criterion.condition}"} ${r"#{criterion.value}"}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${r"${criterion.condition}"} ${r"#{criterion.value}"} and ${r"#{criterion.secondValue}"}
+                </when>
+                <when test="criterion.listValue">
+                  and ${r"${criterion.condition}"}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    ${r"#{listItem}"}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+     </where>
+  </sql>
+  <sql id="Base_Column_List">
+    <#list table.columns as column>${column.sqlName}<#if column_has_next>,</#if></#list>
+  </sql>
+  <select id="selectByExample" parameterType="${basepackage}.${package_pre}${subpackage}.infrastructure.repository.${classNameLower}.${className}Example" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from ${table.sqlName}
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ${table.sqlName}
+    where id = ${r"#{id,jdbcType=VARCHAR}"}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ${table.sqlName}
+    where id = ${r"#{id,jdbcType=VARCHAR}"}
+  </delete>
+  <delete id="deleteByExample" parameterType="${basepackage}.${package_pre}${subpackage}.infrastructure.repository.${classNameLower}.${className}Example">
+    delete from ${table.sqlName}
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="${basepackage}.${package_pre}${subpackage}.domain.entity.${className}">
+    insert into ${table.sqlName} (<#list table.columns as column>
+    ${column.sqlName}
+    </#list>)
+    values (<#list table.columns as column>
+      ${r"#{${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}}"}<#if column_has_next>,</#if>
+    </#list>)
+  </insert>
+  <insert id="insertSelective" parameterType="${basepackage}.${package_pre}${subpackage}.domain.entity.${className}">
+    insert into ${table.sqlName}
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+    <#list table.columns as column>
+      <if test="${column.columnNameLower} != null">
+        ${column.sqlName},
+      </if>
+    </#list>  
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+    <#list table.columns as column>
+      <if test="${column.columnNameLower} != null">
+        ${r"#{${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}}"},
+      </if>
+    </#list>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="${basepackage}.${package_pre}${subpackage}.infrastructure.repository.${classNameLower}.${className}Example" resultType="java.lang.Long">
+    select count(*) from ${table.sqlName}
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ${table.sqlName}
+    <set>
+    <#list table.columns as column>
+      <if test="record.id != null">
+        ${column.sqlName} = ${r"#{"}record.${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}${r"}"},
+      </if>
+    </#list>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ${table.sqlName}
+    set 
+    <#list table.columns as column>
+    id = ${r"#{record.${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}}"}<#if column_has_next>,</#if>
+    </#list>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="${basepackage}.${package_pre}${subpackage}.domain.entity.${className}">
+    update ${table.sqlName}
+    <set>
+    <#list table.columns as column>
+      <if test="loginName != null">
+        ${column.sqlName} = ${r"#{${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}}"},
+      </if>
+    </#list>
+    </set>
+    where id = ${r"#{id,jdbcType=VARCHAR}"}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="${basepackage}.${package_pre}${subpackage}.domain.entity.${className}">
+    update ${table.sqlName}
+    set 
+    <#list table.columns as column>
+    ${column.sqlName} = ${r"#{${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}}"}<#if column_has_next>,</#if>
+    </#list>
+    where id = ${r"#{id,jdbcType=VARCHAR}"}
+  </update>
+</mapper>
