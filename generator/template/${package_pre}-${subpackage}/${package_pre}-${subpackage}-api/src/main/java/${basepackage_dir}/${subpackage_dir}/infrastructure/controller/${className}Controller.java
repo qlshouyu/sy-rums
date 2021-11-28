@@ -2,7 +2,7 @@
 <#assign className = table.className>
 <#assign classNameLower = className?uncap_first>
 <#assign shortName = table.shortName>
-package ${basepackage}.${package_pre}${subpackage}.domain.service;
+package ${basepackage}.${package_pre}${subpackage}.infrastructure.controller;
 
 import ${basepackage}.${package_pre}${subpackage}.infrastructure.repository.${classNameLower}.${className}Example;
 import ${basepackage}.${package_pre}${subpackage}.domain.entity.${className};

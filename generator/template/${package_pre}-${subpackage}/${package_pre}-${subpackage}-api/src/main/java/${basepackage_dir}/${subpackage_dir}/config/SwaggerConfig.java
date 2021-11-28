@@ -1,4 +1,4 @@
-package ${basepackage}.${subpackage}.config;
+package ${basepackage}.${package_pre}${subpackage}.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +18,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("${basepackage}.${subpackage}.controller"))
+                .apis(RequestHandlerSelectors.basePackage("${basepackage}.${package_pre}${subpackage}.infrastructure.controller"))
 //                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
                 .build();

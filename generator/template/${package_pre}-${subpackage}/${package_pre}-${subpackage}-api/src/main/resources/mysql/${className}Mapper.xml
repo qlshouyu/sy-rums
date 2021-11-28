@@ -23,7 +23,7 @@
                   and ${r"${criterion.condition}"} ${r"#{criterion.value}"}
                 </when>
                 <when test="criterion.betweenValue">
-                  and ${r"${criterion.condition} #{criterion.value} and #{criterion.secondValue}"}
+                  and ${r"${criterion.condition}"} ${r"#{criterion.value}"} and ${r"#{criterion.secondValue}"}
                 </when>
                 <when test="criterion.listValue">
                   and ${r"${criterion.condition}"}
@@ -82,7 +82,7 @@
       <include refid="Example_Where_Clause" />
     </if>
     <if test="orderByClause != null">
-      order by ${orderByClause}
+      order by ${r"${orderByClause}"}
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -103,11 +103,13 @@
   </delete>
   <insert id="insert" parameterType="${basepackage}.${package_pre}${subpackage}.domain.entity.${className}">
     insert into ${table.sqlName} (<#list table.columns as column>
-    ${column.sqlName}
+    ${column.sqlName}<#if column_has_next>,</#if>
     </#list>)
-    values (<#list table.columns as column>
-      ${r"#{${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}}"}<#if column_has_next>,</#if>
-    </#list>)
+    values (
+      <#list table.columns as column>
+      ${r"#{"}${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}${r"}"}<#if column_has_next>,</#if>
+      </#list>
+    )
   </insert>
   <insert id="insertSelective" parameterType="${basepackage}.${package_pre}${subpackage}.domain.entity.${className}">
     insert into ${table.sqlName}
@@ -121,7 +123,7 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
     <#list table.columns as column>
       <if test="${column.columnNameLower} != null">
-        ${r"#{${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}}"},
+        ${r"#{"}${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}${r"}"},
       </if>
     </#list>
     </trim>
@@ -149,7 +151,7 @@
     update ${table.sqlName}
     set 
     <#list table.columns as column>
-    id = ${r"#{record.${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}}"}<#if column_has_next>,</#if>
+    id = ${r"#{"}record.${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}${r"}"}<#if column_has_next>,</#if>
     </#list>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -160,7 +162,7 @@
     <set>
     <#list table.columns as column>
       <if test="loginName != null">
-        ${column.sqlName} = ${r"#{${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}}"},
+        ${column.sqlName} = ${r"#{"}${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}${r"}"},
       </if>
     </#list>
     </set>
@@ -170,7 +172,7 @@
     update ${table.sqlName}
     set 
     <#list table.columns as column>
-    ${column.sqlName} = ${r"#{${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}}"}<#if column_has_next>,</#if>
+    ${column.sqlName} = ${r"#{"}${column.columnNameLower},jdbcType=${column.jdbcSqlTypeName}${r"}"}<#if column_has_next>,</#if>
     </#list>
     where id = ${r"#{id,jdbcType=VARCHAR}"}
   </update>
